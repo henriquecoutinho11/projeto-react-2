@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Check, Calendar, User, Tag, AlertTriangle } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import { CATEGORIES } from '../data/initialTasks';
 
 /**

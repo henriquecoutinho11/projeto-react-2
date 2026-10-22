@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, CheckCircle, Code, Layers, Share2, Cpu, List, Shuffle } from 'lucide-react';
+import { X, Code, Layers, Share2, Cpu, List, Shuffle } from 'lucide-react';
 
 /**
  * GUIA COMPLETO DOS 6 CONCEITOS DO PROJETO REACT

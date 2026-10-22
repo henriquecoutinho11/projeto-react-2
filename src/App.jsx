@@ -6,7 +6,7 @@ import TaskModal from './components/TaskModal';
 import VirtualDomInspector from './components/VirtualDomInspector';
 import ConceptsGuideModal from './components/ConceptsGuideModal';
 import { INITIAL_TASKS, CATEGORIES, PRIORITIES, STATUS_COLUMNS } from './data/initialTasks';
-import { Cpu, BookOpen, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Cpu, BookOpen } from 'lucide-react';
 import './App.css';
 
 /**

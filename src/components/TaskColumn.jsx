@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, ListFilter } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import TaskCard from './TaskCard';
 import EmptyState from './EmptyState';
 

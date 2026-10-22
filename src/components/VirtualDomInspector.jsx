@@ -3,13 +3,9 @@ import {
   X, 
   Cpu, 
   Layers, 
-  GitCommit, 
-  CheckCircle, 
-  ArrowRight, 
   RefreshCw, 
   Zap, 
-  Info,
-  Sliders
+  Info
 } from 'lucide-react';
 
 /**

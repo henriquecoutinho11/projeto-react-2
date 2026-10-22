@@ -3,10 +3,7 @@ import {
   Plus, 
   Cpu, 
   BookOpen, 
-  CheckCircle, 
-  Clock, 
   FolderGit2,
-  Sparkles,
   Eye,
   EyeOff
 } from 'lucide-react';
