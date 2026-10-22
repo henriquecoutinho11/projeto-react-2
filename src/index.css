@@ -1,0 +1,155 @@
+:root {
+  --bg-main: #090a0d;
+  --bg-secondary: #11141a;
+  --bg-card: #171b24;
+  --bg-card-hover: #1e2330;
+  --bg-card-active: #252b3b;
+  
+  --border-subtle: #222735;
+  --border-default: #2d3445;
+  --border-highlight: #ff6b00;
+  
+  --orange-primary: #ff6b00;
+  --orange-hover: #ff8533;
+  --orange-active: #e05e00;
+  --orange-glow: rgba(255, 107, 0, 0.28);
+  --orange-subtle: rgba(255, 107, 0, 0.10);
+  --orange-badge: rgba(255, 107, 0, 0.16);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-on-orange: #000000;
+
+  --color-danger: #ef4444;
+  --color-danger-subtle: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-subtle: rgba(245, 158, 11, 0.15);
+  --color-success: #10b981;
+  --color-success-subtle: rgba(16, 185, 129, 0.15);
+  --color-info: #38bdf8;
+  --color-info-subtle: rgba(56, 189, 248, 0.15);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-orange: 0 0 20px rgba(255, 107, 0, 0.35);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background ambient glow effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: -150px;
+  left: 20%;
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -150px;
+  right: 15%;
+  width: 500px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.06) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scrollbar estilizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--orange-primary);
+}
+
+/* Tipografia e formulários */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+}
+
+input, select, textarea {
+  color: var(--text-primary);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--orange-primary);
+  box-shadow: 0 0 0 3px var(--orange-glow);
+}
+
+/* Animação para efeito de Re-renderização do Virtual DOM */
+@keyframes vdomFlash {
+  0% {
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.9), 0 0 25px rgba(255, 107, 0, 0.6);
+    border-color: #ff8533;
+    transform: scale(1.015);
+  }
+  100% {
+    box-shadow: none;
+    border-color: var(--border-default);
+    transform: scale(1);
+  }
+}
+
+.vdom-flash-active {
+  animation: vdomFlash 0.6s ease-out;
+}
