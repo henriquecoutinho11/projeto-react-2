@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import FilterBar from './components/FilterBar';
-import TaskBoard from './components/TaskBoard';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import TaskModal from './components/TaskModal';
 import VirtualDomInspector from './components/VirtualDomInspector';
-import ConceptsGuideModal from './components/ConceptsGuideModal';
-import { INITIAL_TASKS, CATEGORIES, PRIORITIES, STATUS_COLUMNS } from './data/initialTasks';
-import { Cpu, BookOpen } from 'lucide-react';
+import TaskBoardPage from './pages/TaskBoardPage';
+import NewTaskPage from './pages/NewTaskPage';
+import ApiExplorerPage from './pages/ApiExplorerPage';
+import TaskDetailPage from './pages/TaskDetailPage';
+import ConceptsPage from './pages/ConceptsPage';
+import { INITIAL_TASKS } from './data/initialTasks';
+import { Cpu, BookOpen, Layers } from 'lucide-react';
 import './App.css';
 
 /**
- * DEVFLOW - QUADRO KANBAN & GESTÃO ÁGIL
+ * DEVFLOW - GESTÃO ÁGIL & OS 11 CONCEITOS DO REACT
  * 
- * Este projeto atende e demonstra de forma explícita os 6 conceitos de React:
  * 1. JSX
  * 2. Components
  * 3. Props
  * 4. Virtual DOM
  * 5. Listas e Keys
  * 6. Renderização Condicional
+ * 7. State e useState
+ * 8. Formulários (Controlled Components)
+ * 9. useEffect (Lifecycle, sincronização e timers)
+ * 10. Consumo de APIs (REST, Fetch, Async/Await)
+ * 11. React Router (Roteamento SPA, rotas dinâmicas e hooks)
  */
 export default function App() {
-  // Estado principal de tarefas, com persistência no LocalStorage
+  const location = useLocation();
+
+  // CONCEITO 7: STATE & useState - Estado principal de tarefas com LocalStorage
   const [tasks, setTasks] = useState(() => {
     try {
-      const saved = localStorage.getItem('devflow_tasks_react');
+      const saved = localStorage.getItem('devflow_tasks_react_v2');
       return saved ? JSON.parse(saved) : INITIAL_TASKS;
     } catch {
       return INITIAL_TASKS;
@@ -36,18 +45,17 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [selectedPriority, setSelectedPriority] = useState('todas');
 
-  // Estados de Modais e Controle Visual
+  // Estados para Modais e Controle Visual do Virtual DOM
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [defaultColumnStatus, setDefaultColumnStatus] = useState('a-fazer');
   const [isVdomModalOpen, setIsVdomModalOpen] = useState(false);
-  const [isConceptsModalOpen, setIsConceptsModalOpen] = useState(false);
   const [highlightVdomUpdates, setHighlightVdomUpdates] = useState(true);
 
-  // Persistência no LocalStorage
+  // CONCEITO 9: useEffect - Persistência automática no LocalStorage
   useEffect(() => {
     try {
-      localStorage.setItem('devflow_tasks_react', JSON.stringify(tasks));
+      localStorage.setItem('devflow_tasks_react_v2', JSON.stringify(tasks));
     } catch (err) {
       console.error('Falha ao salvar tarefas no LocalStorage:', err);
     }
@@ -56,15 +64,18 @@ export default function App() {
   // Manipulador: Salvar Tarefa (Criação ou Edição)
   const handleSaveTask = (taskData) => {
     if (editingTask) {
-      // Edição de tarefa existente
       setTasks((prev) =>
         prev.map((t) => (t.id === taskData.id ? { ...taskData } : t))
       );
       setEditingTask(null);
     } else {
-      // Inserção de nova tarefa no início da lista
       setTasks((prev) => [taskData, ...prev]);
     }
+  };
+
+  // Manipulador: Adicionar Nova Tarefa (vindo de NewTaskPage ou ApiExplorerPage)
+  const handleAddTask = (newTask) => {
+    setTasks((prev) => [newTask, ...prev]);
   };
 
   // Manipulador: Excluir Tarefa
@@ -79,13 +90,13 @@ export default function App() {
     );
   };
 
-  // Manipulador: Abrir Modal para Edição
+  // Manipulador: Abrir Modal para Edição Rápida
   const handleEditTask = (task) => {
     setEditingTask(task);
     setIsTaskModalOpen(true);
   };
 
-  // Manipulador: Adição Rápida numa coluna específica
+  // Manipulador: Adição Rápida por Coluna
   const handleQuickAdd = (statusId) => {
     setEditingTask(null);
     setDefaultColumnStatus(statusId);
@@ -99,8 +110,7 @@ export default function App() {
     setSelectedPriority('todas');
   };
 
-  // Manipulador: Simular Reconciliação do Virtual DOM
-  // Altera levemente o título de uma tarefa para provar o diffing do VDOM
+  // Manipulador: Simulação de Reconciliação do Virtual DOM
   const handleSimulateVdomUpdate = (taskId) => {
     setTasks((prev) =>
       prev.map((t) => {
@@ -115,7 +125,7 @@ export default function App() {
     );
   };
 
-  // Filtragem dinâmica das tarefas
+  // Filtragem dinâmica das tarefas no Kanban
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -133,49 +143,71 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* CONCEITO 2: COMPONENTS & CONCEITO 3: PROPS */}
-      <Header
-        tasks={tasks}
-        onOpenNewTaskModal={() => {
-          setEditingTask(null);
-          setDefaultColumnStatus('a-fazer');
-          setIsTaskModalOpen(true);
-        }}
+      {/* CONCEITO 2: COMPONENTS & CONCEITO 11: REACT ROUTER */}
+      <Navbar
+        tasksCount={tasks.length}
         onOpenVdomModal={() => setIsVdomModalOpen(true)}
-        onOpenConceptsModal={() => setIsConceptsModalOpen(true)}
         highlightVdomUpdates={highlightVdomUpdates}
         onToggleHighlight={() => setHighlightVdomUpdates((prev) => !prev)}
       />
 
-      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 24px' }}>
-        {/* Barra de Filtros */}
-        <FilterBar
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          selectedPriority={selectedPriority}
-          onPriorityChange={setSelectedPriority}
-          categories={CATEGORIES}
-          priorities={PRIORITIES}
-          onResetFilters={handleResetFilters}
-          totalTasksCount={tasks.length}
-          filteredTasksCount={filteredTasks.length}
+      {/* CONCEITO 11: REACT ROUTER - Roteamento com <Routes> e <Route> */}
+      <Routes>
+        {/* Rota 1: Quadro Kanban Principal */}
+        <Route
+          path="/"
+          element={
+            <TaskBoardPage
+              tasks={tasks}
+              filteredTasks={filteredTasks}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+              selectedPriority={selectedPriority}
+              onPriorityChange={setSelectedPriority}
+              onResetFilters={handleResetFilters}
+              onMoveTask={handleMoveTask}
+              onDeleteTask={handleDeleteTask}
+              onEditTask={handleEditTask}
+              onQuickAdd={handleQuickAdd}
+              highlightVdomUpdates={highlightVdomUpdates}
+            />
+          }
         />
 
-        {/* Quadro Kanban */}
-        <TaskBoard
-          columns={STATUS_COLUMNS}
-          tasks={filteredTasks}
-          onMoveTask={handleMoveTask}
-          onDeleteTask={handleDeleteTask}
-          onEditTask={handleEditTask}
-          onQuickAdd={handleQuickAdd}
-          highlightVdomUpdates={highlightVdomUpdates}
+        {/* Rota 2: Formulário Avançado de Nova Tarefa */}
+        <Route
+          path="/nova-tarefa"
+          element={<NewTaskPage onAddTask={handleAddTask} />}
         />
-      </div>
 
-      {/* CONCEITO 6: RENDERIZAÇÃO CONDICIONAL nos modais */}
+        {/* Rota 3: Consumo de APIs REST (Fetch & Async/Await) */}
+        <Route
+          path="/integracao-api"
+          element={<ApiExplorerPage onImportTask={handleAddTask} />}
+        />
+
+        {/* Rota 4: Detalhes da Tarefa com Parâmetro Dinâmico :id */}
+        <Route
+          path="/tarefa/:id"
+          element={
+            <TaskDetailPage
+              tasks={tasks}
+              onMoveTask={handleMoveTask}
+              onDeleteTask={handleDeleteTask}
+            />
+          }
+        />
+
+        {/* Rota 5: Central Documentada dos 11 Conceitos */}
+        <Route path="/conceitos" element={<ConceptsPage />} />
+
+        {/* Rota Fallback: Redireciona para o Quadro */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      {/* Modais Globais */}
       <TaskModal
         isOpen={isTaskModalOpen}
         onClose={() => {
@@ -196,29 +228,17 @@ export default function App() {
         onToggleHighlight={() => setHighlightVdomUpdates((prev) => !prev)}
       />
 
-      <ConceptsGuideModal
-        isOpen={isConceptsModalOpen}
-        onClose={() => setIsConceptsModalOpen(false)}
-      />
-
-      {/* Barra Flutuante de Atalho Didático */}
+      {/* Barra Flutuante de Atalho Didático (visível em todas as páginas) */}
       <footer className="floating-footer">
         <div className="floating-footer-content">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="live-dot" />
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
-              Projeto React: <strong>6/6 Conceitos Atendidos</strong>
+              DevFlow: <strong>11/11 Conceitos Implementados</strong>
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <button
-              onClick={() => setIsConceptsModalOpen(true)}
-              className="footer-btn"
-            >
-              <BookOpen size={14} />
-              Ver Código dos 6 Conceitos
-            </button>
             <button
               onClick={() => setIsVdomModalOpen(true)}
               className="footer-btn-primary"

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import PriorityBadge from './PriorityBadge';
 import CategoryBadge from './CategoryBadge';
+import { Link } from 'react-router-dom';
 
 /**
  * CONCEITO 1: JSX - Sintaxe expressiva mesclando marcação e lógica JS
@@ -99,19 +100,29 @@ export default function TaskCard({
         </span>
       </div>
 
-      {/* Título e Descrição */}
+      {/* Título e Descrição - Título é um Link para a rota dinâmica /tarefa/:id */}
       <div>
         <h3
           style={{
             fontSize: '0.98rem',
             fontWeight: 700,
-            color: isCompleted ? 'var(--text-secondary)' : 'var(--text-primary)',
-            textDecoration: isCompleted ? 'line-through' : 'none',
             marginBottom: '6px',
             lineHeight: 1.35
           }}
         >
-          {task.title}
+          <Link
+            to={`/tarefa/${task.id}`}
+            title="Ver detalhes da tarefa (React Router: /tarefa/:id)"
+            style={{
+              color: isCompleted ? 'var(--text-secondary)' : 'var(--text-primary)',
+              textDecoration: isCompleted ? 'line-through' : 'none',
+              transition: 'color var(--transition-fast)'
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--orange-primary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = isCompleted ? 'var(--text-secondary)' : 'var(--text-primary)')}
+          >
+            {task.title}
+          </Link>
         </h3>
 
         <p
