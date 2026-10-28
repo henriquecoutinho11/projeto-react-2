@@ -1,7 +1,7 @@
-# ⚡ DevFlow • Quadro Kanban & Gestão Ágil
+# ⚡ DevFlow • Quadro Kanban, Gestão Ágil & Os 11 Conceitos do React
 
-Projeto desenvolvido em **React 19** com **Vite** para a disciplina de **Frameworks Front-End**.
-O sistema implementa uma interface moderna no tema **Preto e Laranja** com gestão completa de tarefas, filtros inteligentes, persistência em `localStorage` e demonstração didática dos **6 conceitos fundamentais do React**.
+Projeto desenvolvido em **React 19** com **Vite** e **React Router** para a disciplina de **Frameworks Front-End**.
+O sistema conta com tema **Preto e Laranja**, gestão ágil de tarefas, integração com APIs externas, formulários avançados com validação, roteamento SPA e a implementação didática dos **11 conceitos essenciais do React**.
 
 ---
 
@@ -18,38 +18,63 @@ O sistema implementa uma interface moderna no tema **Preto e Laranja** com gest�
 
 ## 🚀 Como Executar o Projeto
 
-1. Instale as dependências (já instaladas):
+1. Certifique-se de que as dependências estão instaladas:
    ```bash
    npm install
    ```
 
-2. Inicie o servidor de desenvolvimento:
+2. Inicie o servidor de desenvolvimento Vite:
    ```bash
    npm run dev
    ```
 
-3. Abra o navegador no link indicado pelo Vite (geralmente `http://localhost:5173`).
+3. Acesse `http://localhost:5173` no seu navegador.
 
 ---
 
-## 📚 Os 6 Conceitos no Código (Para Apresentação)
+## 🧭 Rotas do Aplicativo (React Router)
 
-| # | Conceito | Onde está implementado | O que faz no projeto |
+| Rota | Descrição | Conceitos Principais Demonstrados |
+|---|---|---|
+| `/` | **Quadro Kanban Principal** | Components, Props, Virtual DOM, Listas & Keys, Renderização Condicional, useEffect (título da aba). |
+| `/nova-tarefa` | **Formulário Completo** | Formulários controlados, validação em tempo real, State e useState, useNavigate(). |
+| `/integracao-api` | **Consumo de APIs REST** | Fetch, async/await, try/catch, useEffect na montagem, estados de loading/error, importação para o Kanban. |
+| `/tarefa/:id` | **Detalhes da Tarefa** | Rotas dinâmicas com `useParams()`, renderização condicional se não existir, atualização de status. |
+| `/conceitos` | **Central dos 11 Conceitos** | Documentação interativa completa com filtros, explicações e trechos de código. |
+
+---
+
+## 📚 Tabela dos 11 Conceitos do React no Projeto
+
+| # | Conceito | Onde está no código | Como funciona no DevFlow |
 |---|---|---|---|
-| **1** | **JSX** | [`src/components/TaskCard.jsx`](./src/components/TaskCard.jsx), [`src/App.jsx`](./src/App.jsx) | Mescla sintaxe de marcação com JavaScript, classes dinâmicas, eventos `onClick`, `onSubmit` e interpolação de variáveis. |
-| **2** | **Components** | [`src/components/`](./src/components/) | Divisão modular em componentes com responsabilidade única: `Header`, `FilterBar`, `TaskBoard`, `TaskColumn`, `TaskCard`, `PriorityBadge`, `CategoryBadge`, `TaskModal`, `VirtualDomInspector`, `EmptyState`. |
-| **3** | **Props** | [`src/components/PriorityBadge.jsx`](./src/components/PriorityBadge.jsx), [`src/components/TaskColumn.jsx`](./src/components/TaskColumn.jsx) | Passagem unidirecional de dados (tarefas, colunas, categorias) e callbacks (`onMove`, `onDelete`, `onEdit`, `onSaveTask`) entre componentes pais e filhos. |
-| **4** | **Virtual DOM** | [`src/components/VirtualDomInspector.jsx`](./src/components/VirtualDomInspector.jsx), [`src/components/TaskCard.jsx`](./src/components/TaskCard.jsx) | Laboratório interativo de diffing e reconciliação. Cada card possui um contador de renders em tempo real (`vDOM #X`) via `useRef` e feedback visual de nós atualizados. |
-| **5** | **Listas e Keys** | [`src/components/TaskColumn.jsx`](./src/components/TaskColumn.jsx), [`src/components/FilterBar.jsx`](./src/components/FilterBar.jsx) | Renderização de coleções com `.map()` utilizando `key={task.id}`, `key={column.id}` e `key={category}` para permitir que o React identifique elementos sem re-renderizar a lista inteira. |
-| **6** | **Renderização Condicional** | [`src/components/TaskCard.jsx`](./src/components/TaskCard.jsx), [`src/components/EmptyState.jsx`](./src/components/EmptyState.jsx), [`src/components/TaskModal.jsx`](./src/components/TaskModal.jsx) | Uso de operador ternário (`? :`), curto-circuito (`&&`) e retorno antecipado (`if (!isOpen) return null`) para exibir botões de avançar/voltar, alertas de urgência, cards concluídos e modais. |
+| **1** | **JSX** | [`src/components/TaskCard.jsx`](file:///src/components/TaskCard.jsx) | Mescla sintaxe HTML-like com expressões JS `{...}`, eventos `onClick`, interpolação e fragmentos. |
+| **2** | **Components** | [`src/components/`](file:///src/components/), [`src/pages/`](file:///src/pages/) | Divisão modular e reutilizável (`Navbar`, `TaskBoard`, `TaskColumn`, `TaskCard`, `PriorityBadge`, etc.). |
+| **3** | **Props** | [`src/components/TaskColumn.jsx`](file:///src/components/TaskColumn.jsx) | Passagem unidirecional de dados (tarefas, prioridades, status) e callbacks (`onMoveTask`, `onDeleteTask`). |
+| **4** | **Virtual DOM** | [`src/components/VirtualDomInspector.jsx`](file:///src/components/VirtualDomInspector.jsx) | Laboratório interativo de diffing e reconciliação. Contador de render em tempo real (`vDOM #X`) via `useRef` em cada card. |
+| **5** | **Listas e Keys** | [`src/components/TaskColumn.jsx`](file:///src/components/TaskColumn.jsx) | Iteração via `.map()` usando chaves únicas obrigatórias (`key={task.id}`) para estabilidade de nós no Virtual DOM. |
+| **6** | **Renderização Condicional** | [`src/components/EmptyState.jsx`](file:///src/components/EmptyState.jsx), [`src/components/TaskCard.jsx`](file:///src/components/TaskCard.jsx) | Uso de operadores ternários (`? :`), curto-circuito (`&&`) e retornos antecipados (`if (!task) return ...`). |
+| **7** | **State e useState** | [`src/App.jsx`](file:///src/App.jsx), [`src/pages/NewTaskPage.jsx`](file:///src/pages/NewTaskPage.jsx) | Gerenciamento de dados reativos para tarefas, filtros, campos de formulário, modais e tags dinâmicas. |
+| **8** | **Formulários** | [`src/pages/NewTaskPage.jsx`](file:///src/pages/NewTaskPage.jsx) | Controlled Components com `value` e `onChange`, `e.preventDefault()`, validação de erros e contador de caracteres. |
+| **9** | **useEffect** | [`src/components/Navbar.jsx`](file:///src/components/Navbar.jsx), [`src/pages/ApiExplorerPage.jsx`](file:///src/pages/ApiExplorerPage.jsx) | Relógio com intervalo e limpeza (`clearInterval`), sincronização com `localStorage` e requisição na montagem `[]`. |
+| **10** | **Consumo de APIs** | [`src/pages/ApiExplorerPage.jsx`](file:///src/pages/ApiExplorerPage.jsx) | Requisições assíncronas com `fetch()`, `async/await`, tratamento com `try/catch/finally` e estados de `loading` e `error`. |
+| **11** | **React Router** | [`src/main.jsx`](file:///src/main.jsx), [`src/App.jsx`](file:///src/App.jsx), [`src/components/Navbar.jsx`](file:///src/components/Navbar.jsx) | Single Page Application com `BrowserRouter`, `Routes`, `Route`, `NavLink`, `Link`, `useNavigate()` e `useParams()`. |
 
 ---
 
-## 🎯 Destaques e Diferenciais para Nota Máxima
+## 🎯 Roteiro Rápido para Apresentação em Aula
 
-- **Inspetor Interativo do Virtual DOM**: Botão no cabeçalho e no rodapé que abre uma janela demonstrando visualmente as 3 fases do Virtual DOM (Render -> Diffing -> Reconciliação).
-- **Simulador de Atualização**: Permite disparar atualizações em nós únicos e ver apenas aquele componente sofrendo patch no DOM real.
-- **Rastreador de Render por Card**: Cada card exibe sua contagem de re-renderizações (`vDOM #1`, `vDOM #2`, etc.).
-- **Persistência Automática**: Tarefas criadas, movidas ou excluídas são salvas no `localStorage`.
-- **Filtros Combinados**: Busca textual por título, descrição ou responsável combinada com chips de categorias e prioridades.
-- **Design Responsivo & Acessível**: Paleta de alto contraste preto e laranja com tipografia moderna.
+1. **Apresentar o Roteamento (React Router)**:
+   - Navegue pela barra superior entre **Quadro Kanban**, **Nova Tarefa**, **Consumo de API** e **11 Conceitos**, mostrando que a URL muda sem recarregar a página.
+2. **Apresentar Formulários e State (useState)**:
+   - Vá na página `/nova-tarefa`.
+   - Tente submeter o formulário vazio para mostrar a validação em tempo real e as mensagens de erro.
+   - Digite o título para mostrar o contador de caracteres (`/80`), adicione tags dinâmicas com o botão `+` e salve a tarefa (redirecionamento automático com `useNavigate`).
+3. **Apresentar Consumo de APIs e useEffect**:
+   - Acesse `/integracao-api`.
+   - Explique que o `useEffect` dispara a busca assíncrona com `fetch()` na montagem da tela.
+   - Mostre o estado de carregamento (*spinner*) e clique em **"Importar p/ Quadro"** para trazer uma tarefa da API diretamente para o Kanban!
+   - Aponte o relógio no topo da tela para mostrar um `useEffect` com função de limpeza (`clearInterval`).
+4. **Apresentar o Virtual DOM e Parâmetro Dinâmico**:
+   - Clique em qualquer título de card no Kanban para abrir a rota dinâmica `/tarefa/:id` (usando `useParams`).
+   - Abra o **Inspetor Virtual DOM** no botão laranja para mostrar a simulação do algoritmo de diffing em tempo real.
